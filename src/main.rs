@@ -1,5 +1,5 @@
 use clap::{Arg, Command};
-use std::{error::Error, intrinsics::unreachable};
+use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let matches = get_matches();
@@ -8,18 +8,17 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     match matches.subcommand() {
         Some(("set", submatches)) => {
-            let key = submatches.value_of("key").unwrap();
+            let key = submatches.value_of("key").expect("No key specified");
             let val: String = submatches
                 .values_of("val")
-                .unwrap()
+                .expect("No value specified")
                 .collect::<Vec<_>>()
                 .join(" ");
             store.insert(key, val.as_bytes())?;
-            println!("set the key");
         }
 
         Some(("get", submatches)) => {
-            let key = submatches.value_of("key").unwrap();
+            let key = submatches.value_of("key").expect("No key specified");
             if let Some(val) = store.get(key)? {
                 let s = String::from_utf8(val.to_vec())?;
                 println!("{}", s);
@@ -30,13 +29,13 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
 
         Some(("del", submatches)) => {
-            let key = submatches.value_of("key").unwrap();
+            let key = submatches.value_of("key").expect("No key specified");
             store.remove(key)?;
         }
 
         Some(("list", _submatches)) => {
             for row in store.iter() {
-                let (key, val) = row.unwrap();
+                let (key, val) = row.expect("Could not read row");
                 println!(
                     "{}\t{}",
                     String::from_utf8(key.to_vec())?,
