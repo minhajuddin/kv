@@ -2,7 +2,6 @@ use clap::{Arg, Command};
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    // TODO: this thing compiles the home directory of the user at compile time
     let matches = get_matches();
     let data_dir = dirs::data_dir().expect("Could not find data directory");
     let store = sled::open(data_dir.join("kv.db"))?;
@@ -27,6 +26,22 @@ fn main() -> Result<(), Box<dyn Error>> {
             } else {
                 eprintln!("key not found");
                 std::process::exit(1);
+            }
+        }
+
+        Some(("del", submatches)) => {
+            let key = submatches.value_of("key").unwrap();
+            store.remove(key)?;
+        }
+
+        Some(("list", _submatches)) => {
+            for row in store.iter() {
+                let (key, val) = row.unwrap();
+                println!(
+                    "{}\t{}",
+                    String::from_utf8(key.to_vec())?,
+                    String::from_utf8(val.to_vec())?
+                );
             }
         }
         _ => println!("No subcommand was used"),
@@ -65,6 +80,17 @@ fn get_matches() -> clap::ArgMatches {
                         .required(true),
                 ),
         )
+        .subcommand(
+            Command::new("del")
+                .about("Deletes a value for a given key")
+                .arg(
+                    Arg::new("key")
+                        .help("key to delete")
+                        .value_name("KEY")
+                        .required(true),
+                ),
+        )
+        .subcommand(Command::new("list").about("List all keys and values separated by tabs"))
         .subcommand_required(true)
         .get_matches()
 }
