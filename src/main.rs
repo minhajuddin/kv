@@ -1,5 +1,5 @@
 use clap::{Arg, Command};
-use std::error::Error;
+use std::{error::Error, intrinsics::unreachable};
 
 fn main() -> Result<(), Box<dyn Error>> {
     let matches = get_matches();
@@ -44,7 +44,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 );
             }
         }
-        _ => println!("No subcommand was used"),
+        _ => unreachable!(),
     }
 
     Ok(())
