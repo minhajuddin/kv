@@ -1,4 +1,7 @@
 # kv
+<a href="https://crates.io/crates/bash-kv">
+    <img src="https://img.shields.io/crates/v/bash-kv.svg">
+</a>
 
 A simple key-value store. Helps you in storing urls and other misc.
 
