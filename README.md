@@ -13,6 +13,8 @@ kv set es_url https://prd.es.hyperngn.com
 kv get es_url
 # ^ 0 exit code with following output on  
 # https://prd.es.hyperngn.com
+# use this value to fetch data
+curl -v "$(kv get es_url)"
 
 kv del es_url
 # ^ 0 exit code and no output
