@@ -1,9 +1,19 @@
 [package]
-name = "kv"
-version = "0.1.0"
+name = "bash-kv"
+version = "1.0.0"
+authors = ["Khaja Minhajuddin <minhajuddin.k@gmail.com>"]
+license = "MIT"
+keywords = ["bash kv store", "kv", "bash"]
+repository = "https://github.com/minhajuddin/kv"
+description = "A simple bash kv store"
+documentation = "https://docs.rs/bash-kv"
+readme = "README.md"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[bin]]
+name = "kv"
+path = "src/main.rs"
 
 [dependencies]
 clap = "3.1.1"
